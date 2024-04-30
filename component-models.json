@@ -248,12 +248,10 @@
         "valueType": "string"
       },
       {
-        "component": "date-time",
-        "name": "datetime",
-        "label": "Date Time",
-        "valueType": "date",
-        "required": true
-      }
+        "component": "number",
+        "name": "number",
+        "label": "Number"
+      },
     ]
   }
 ]
