@@ -246,6 +246,12 @@
         "value": "",
         "label": "Text",
         "valueType": "string"
+      },
+      {
+        "component": "date-time",
+        "name": "datetime",
+        "label": "Date Time",
+        "required": true
       }
     ]
   }
