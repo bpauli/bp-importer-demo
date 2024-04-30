@@ -246,11 +246,6 @@
         "value": "",
         "label": "Text",
         "valueType": "string"
-      },
-      {
-        "component": "number",
-        "name": "number",
-        "label": "Number"
       }
     ]
   }
