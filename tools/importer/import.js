@@ -13,9 +13,9 @@
 /* eslint-disable class-methods-use-this */
 
 // helix-importer-ui <-> node compatibility:
-import {
-  xfTransformers, xfAsyncTransformers, transformers, postTransformers,
-} from './transformers/index.js';
+if (window) window.decodeHtmlEntities = (text) => text; // not-needed in browser
+
+import { transformers } from './transformers/index.js';
 
 export default {
   /**
@@ -29,37 +29,25 @@ export default {
    */
   transformDOM: async ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     // define the main element: the one that will be transformed to Markdown
     const main = document.body;
 
-    transformers.forEach(
-      (fn) => fn.call(this, main, document, params, url),
-    );
+    transformers.forEach((fn) => fn.call(this, main, document, params, url));
 
-    // we only create the footer and header if not included via XF on a page
-    const xf = main.querySelector('div.experiencefragment');
-    if (!xf) {
-      xfTransformers.forEach(
-        (fn) => fn.call(this, main, document, params, url),
-      );
-      await Promise.all(xfAsyncTransformers.map((fn) => fn(main, document, params, url)));
-    }
-
-    // use helper method to remove header, footer, etc.
     WebImporter.DOMUtils.remove(main, [
       'header',
       'footer',
-      'component',
-      'div.social',
-      'div.cloudservice.testandtarget',
+      '.disclaimer',
+      '.cmp-avatar__container',
+      '.image-list',
+      '#cq-analytics-texthint',
     ]);
 
-    // create the metadata block and append it to the main element
-    postTransformers.forEach(
-      (fn) => fn.call(this, main, document, html, params, url),
-    );
     return main;
   },
 
@@ -74,6 +62,12 @@ export default {
    */
   generateDocumentPath: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
-  }) => WebImporter.FileUtils.sanitizePath(new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '')),
+    document,
+    url,
+    html,
+    params,
+  }) =>
+    WebImporter.FileUtils.sanitizePath(
+      new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, ''),
+    ),
 };

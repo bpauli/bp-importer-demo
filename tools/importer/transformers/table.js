@@ -1,8 +1,21 @@
-import { mapTable } from './util.js';
+/* global WebImporter */
+const table = async (main, document, params, url) => {
 
-const createTable = (main, document) => {
-  main.querySelectorAll('table').forEach((table) => {
-    mapTable(table, document);
-  });
+  const tables = main.querySelectorAll('table');
+
+  if (tables) {
+    main.querySelectorAll('table').forEach((table) => {
+      let tHead = table.querySelector('thead');
+      if (!tHead) {
+        tHead = table.createTHead();
+      }
+      if (tHead) {
+        const row = tHead.insertRow(0);
+        const th = document.createElement('th');
+        th.textContent = 'Table';
+        row.appendChild(th);
+      }
+    });
+  }
 };
-export default createTable;
+export default table;
