@@ -251,6 +251,7 @@
         "component": "date-time",
         "name": "datetime",
         "label": "Date Time",
+        "valueType": "time",
         "required": true
       }
     ]
