@@ -136,6 +136,13 @@
         "name": "alt",
         "value": "Default alt",
         "label": "Alt Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "value": "",
+        "label": "Title"
       }
     ]
   },
@@ -260,6 +267,211 @@
         "label": "Text",
         "valueType": "string"
       }
+    ]
+  },
+  {
+    "fields": [
+      {
+        "component": "text",
+        "label": "Heading",
+        "name": "heading",
+        "value": "",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "label": "Heading Type",
+        "name": "headingType",
+        "value": "",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "label": "Text",
+        "name": "text",
+        "value": "",
+        "valueType": "string"
+      }
+    ],
+    "id": "simple-block"
+  },
+  {
+    "fields": [
+      {
+        "component": "select",
+        "label": "Options",
+        "name": "classes",
+        "value": "",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "default",
+            "value": ""
+          },
+          {
+            "name": "Advanced",
+            "value": "advanced"
+          },
+          {
+            "name": "Simple",
+            "value": "simple"
+          }
+        ]
+      }
+    ],
+    "id": "advanced-block"
+  },
+  {
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "label": "Alt",
+        "name": "imageAlt",
+        "value": "",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link",
+        "value": "",
+        "label": "Link"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "linkText",
+        "value": "",
+        "label": "Link Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "linkTitle",
+        "value": "",
+        "label": "Link Title"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "linkType",
+        "value": "",
+        "label": "Link Type",
+        "options": [
+          {
+            "name": "default",
+            "value": ""
+          },
+          {
+            "name": "primary",
+            "value": "primary"
+          },
+          {
+            "name": "secondary",
+            "value": "secondary"
+          }
+        ]
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ],
+    "id": "advanced-block-item-type-1"
+  },
+  {
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "label": "Alt",
+        "name": "imageAlt",
+        "value": "",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "link",
+        "value": "",
+        "label": "Link"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "linkText",
+        "value": "",
+        "label": "Link Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "linkTitle",
+        "value": "",
+        "label": "Link Title"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "linkType",
+        "value": "",
+        "label": "Link Type",
+        "options": [
+          {
+            "name": "default",
+            "value": ""
+          },
+          {
+            "name": "primary",
+            "value": "primary"
+          },
+          {
+            "name": "secondary",
+            "value": "secondary"
+          }
+        ]
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ],
+    "id": "advanced-block-item-type-2"
+  },
+  {
+    "id": "grouped-block",
+    "fields": [
+      { "name": "bg_image" },
+      { "name": "bg_imageAlt" },
+      { "name": "fg_image" },
+      { "name": "fg_imageAlt" },
+      { "name": "fg_subtitle" },
+      { "name": "fg_title" },
+      { "name": "fg_titleType" },
+      { "name": "fg_description" },
+      { "name": "fg_cta" },
+      { "name": "fg_ctaText" },
+      { "name": "fg_ctaTitle" },
+      { "name": "fg_ctaType" }
     ]
   }
 ]
