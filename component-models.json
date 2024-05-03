@@ -407,6 +407,13 @@
       },
       {
         "component": "text",
+        "label": "Title",
+        "name": "imageTitle",
+        "value": "",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
         "valueType": "string",
         "name": "link",
         "value": "",
