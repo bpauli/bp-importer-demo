@@ -63,6 +63,19 @@
     ]
   },
   {
+    "id": "author",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "author-name",
+        "value": "",
+        "label": "Author name",
+        "description": "Sets the name of Author"
+      }
+    ]
+  },
+  {
     "id": "title",
     "fields": [
       {
