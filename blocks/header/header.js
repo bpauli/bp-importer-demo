@@ -1,149 +1,206 @@
-import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
+import { createEffect, createMemo, createSignal, onMount } from 'solid-js';
+import html from 'solid-js/html';
+import { render } from 'solid-js/web';
+import { clamp } from '../../lib/utils.js';
 
-// media query match that indicates mobile/tablet width
-const isDesktop = window.matchMedia('(min-width: 900px)');
-
-function closeOnEscape(e) {
-  if (e.code === 'Escape') {
-    const nav = document.getElementById('nav');
-    const navSections = nav.querySelector('.nav-sections');
-    const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
-    if (navSectionExpanded && isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleAllNavSections(navSections);
-      navSectionExpanded.focus();
-    } else if (!isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleMenu(nav, navSections);
-      nav.querySelector('button').focus();
-    }
-  }
-}
-
-function openOnKeydown(e) {
-  const focused = document.activeElement;
-  const isNavDrop = focused.className === 'nav-drop';
-  if (isNavDrop && (e.code === 'Enter' || e.code === 'Space')) {
-    const dropExpanded = focused.getAttribute('aria-expanded') === 'true';
-    // eslint-disable-next-line no-use-before-define
-    toggleAllNavSections(focused.closest('.nav-sections'));
-    focused.setAttribute('aria-expanded', dropExpanded ? 'false' : 'true');
-  }
-}
-
-function focusNavSection() {
-  document.activeElement.addEventListener('keydown', openOnKeydown);
-}
-
-/**
- * Toggles all nav sections
- * @param {Element} sections The container element
- * @param {Boolean} expanded Whether the element should be expanded or collapsed
- */
-function toggleAllNavSections(sections, expanded = false) {
-  sections.querySelectorAll('.nav-sections .default-content-wrapper > ul > li').forEach((section) => {
-    section.setAttribute('aria-expanded', expanded);
-  });
-}
-
-/**
- * Toggles the entire nav
- * @param {Element} nav The container element
- * @param {Element} navSections The nav sections within the container element
- * @param {*} forceExpanded Optional param to force nav expand behavior when not null
- */
-function toggleMenu(nav, navSections, forceExpanded = null) {
-  const expanded = forceExpanded !== null ? !forceExpanded : nav.getAttribute('aria-expanded') === 'true';
-  const button = nav.querySelector('.nav-hamburger button');
-  document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
-  nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-  toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
-  button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
-  // enable nav dropdown keyboard accessibility
-  const navDrops = navSections.querySelectorAll('.nav-drop');
-  if (isDesktop.matches) {
-    navDrops.forEach((drop) => {
-      if (!drop.hasAttribute('tabindex')) {
-        drop.setAttribute('role', 'button');
-        drop.setAttribute('tabindex', 0);
-        drop.addEventListener('focus', focusNavSection);
-      }
-    });
-  } else {
-    navDrops.forEach((drop) => {
-      drop.removeAttribute('role');
-      drop.removeAttribute('tabindex');
-      drop.removeEventListener('focus', focusNavSection);
-    });
-  }
-  // enable menu collapse on escape keypress
-  if (!expanded || isDesktop.matches) {
-    // collapse menu on escape press
-    window.addEventListener('keydown', closeOnEscape);
-  } else {
-    window.removeEventListener('keydown', closeOnEscape);
-  }
-}
-
-/**
- * loads and decorates the header, mainly the nav
- * @param {Element} block The header block element
- */
+/** @param {HTMLElement} block */
 export default async function decorate(block) {
-  // load nav as fragment
-  const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const fragment = await loadFragment(navPath);
+  const langUrlSegment = document.location.pathname.split('/').at(1);
+  const lang = langUrlSegment?.match(/^(en|de)$/i)?.[0] || 'en';
+  const headerXF = await fetch(
+    `/fragments/${lang || 'en'}/site/header/master.plain.html`,
+  );
+  const headerHTML = await headerXF.text();
+  const documentFragment = document
+    .createRange()
+    .createContextualFragment(headerHTML);
+  block.innerHTML = '';
 
-  // decorate nav DOM
-  block.textContent = '';
-  const nav = document.createElement('nav');
-  nav.id = 'nav';
-  while (fragment.firstElementChild) nav.append(fragment.firstElementChild);
+  render(() => Header(documentFragment, langUrlSegment), block);
+}
 
-  const classes = ['brand', 'sections', 'tools'];
-  classes.forEach((c, i) => {
-    const section = nav.children[i];
-    if (section) section.classList.add(`nav-${c}`);
+/**
+ * @param {DocumentFragment} documentFragment
+ * @param {string | undefined} langUrlSegment
+ */
+function Header(documentFragment, langUrlSegment) {
+  const [menuOpen, setMenuOpen] = createSignal(false);
+  const [isLarge, setIsLarge] = createSignal(false);
+  const [nav, langNav] = documentFragment.querySelectorAll('ul');
+  const contactButton = [...documentFragment.querySelectorAll('a')].at(-1);
+  const computedUrlSegment = langUrlSegment ? `/${langUrlSegment}.html` : '/';
+  const showMenu = createMemo(() => menuOpen() && !isLarge());
+
+  createEffect(() => {
+    if (showMenu()) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
   });
 
-  const navBrand = nav.querySelector('.nav-brand');
-  const brandLink = navBrand.querySelector('.button');
-  if (brandLink) {
-    brandLink.className = '';
-    brandLink.closest('.button-container').className = '';
-  }
+  onMount(() => {
+    const header = document.querySelector('header');
+    if (!header) {
+      console.error('header not found');
+      return;
+    }
 
-  const navSections = nav.querySelector('.nav-sections');
-  if (navSections) {
-    navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
-      if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-      navSection.addEventListener('click', () => {
-        if (isDesktop.matches) {
-          const expanded = navSection.getAttribute('aria-expanded') === 'true';
-          toggleAllNavSections(navSections);
-          navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        }
-      });
+    let scroll = 0;
+    let lastScroll = 0;
+
+    /**
+     * @param {number} scrollPos
+     * @param {HTMLElement} element
+     */
+    function translateElement(scrollPos, element) {
+      if (scrollPos < 0) { // happens on rubber banding on iPhone
+        return;
+      }
+
+      const height = element.getBoundingClientRect().height; // this might cause perf issues and could be statically defined based on breakpoints.
+      scroll = clamp(scroll + (scrollPos - lastScroll), 0, height);
+      element.style.setProperty('transform', `translateY(-${scroll}px)`);
+      scrollPos > 0
+        ? element.classList.add('scrolled')
+        : element.classList.remove('scrolled');
+      lastScroll = scrollPos;
+    }
+
+    document.addEventListener('scroll', () => {
+      translateElement(window.scrollY, header);
+    });
+  });
+
+  createEffect(() => {
+    const mql = window.matchMedia('(min-width: 1025px)');
+    /** @param {MediaQueryListEvent} evt */
+    const handler = (evt) => {
+      if (evt.matches) {
+        setIsLarge(true);
+      } else {
+        setIsLarge(false);
+      }
+    };
+    mql.addEventListener('change', handler);
+
+    if (mql.matches) {
+      setIsLarge(true);
+    } else {
+      setIsLarge(false);
+    }
+    return () => {
+      mql.removeEventListener('change', handler);
+    };
+  });
+
+  function toggle() {
+    setMenuOpen((open) => {
+      return !open;
     });
   }
 
-  // hamburger for mobile
-  const hamburger = document.createElement('div');
-  hamburger.classList.add('nav-hamburger');
-  hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
-      <span class="nav-hamburger-icon"></span>
-    </button>`;
-  hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
-  nav.prepend(hamburger);
-  nav.setAttribute('aria-expanded', 'false');
-  // prevent mobile nav behavior on window resize
-  toggleMenu(nav, navSections, isDesktop.matches);
-  isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
+  return html`
+    <div class="container mx-auto flex max-w-screen-2xl items-center">
+      <a href="${computedUrlSegment}">
+        <img
+          src="/icons/logo.svg"
+          alt="logo"
+          class="aspect-[307/96] w-[117px] md:w-[148px]"
+        />
+      </a>
+      <div
+        class="grid place-items-center transition-all lg:mx-[30px] lg:ml-[3.75rem] lg:flex lg:flex-1 lg:items-center lg:justify-between lg:opacity-100"
+        classList=${() => ({
+          'menuOpen': showMenu(),
+          'menu fixed inset-0 z-10 bg-white h-screen w-screen mx-0':
+            !isLarge(),
+        })}
+      >
+        <nav
+          class="flex flex-col items-center justify-center text-2xl font-medium leading-5 transition-all duration-500 ease-[ease] *:my-[30px] lg:flex-row lg:text-base lg:*:mx-[20px] lg:*:my-0"
+        >
+          ${[...nav.querySelectorAll('a')].map((item) => {
+            const { href, textContent } = item;
+            return html`
+              <a
+                href=${href}
+                class="transition duration-300 ease-[ease] lg:hover:-translate-y-[0.125rem]"
+              >
+                ${textContent}
+              </a>
+            `;
+          })}
+        </nav>
+        <div class="hidden lg:block">
+          <${LangNav} nav="${langNav}" urlSegment="${langUrlSegment}" />
+        </div>
+      </div>
+      <div class="ml-auto flex items-center gap-4">
+        <a
+          class="flex items-center from-[#eff1f4] from-50% to-comwrap-pink to-50% bg-[length:calc(200%+2px)_100%] bg-[100%_100%] transition-all duration-300 ease-[ease] hover:bg-[0%_100%] hover:text-comwrap-black lg:rounded-[3px] lg:bg-gradient-to-r lg:px-[1.25rem] lg:py-[0.405rem] lg:text-white"
+          href=${contactButton?.href || ''}
+          aria-label="contact"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="ml-[-0.4rem] mr-[0.4rem] w-8 lg:w-[22px]"
+            classList=${() => ({
+              hidden: showMenu(),
+            })}
+          >
+            <path
+              d="M2.617 21.924A1 1 0 012 21V11a2 2 0 012-2h2a1 1 0 011 1 1 1 0 01-1 1H4v7.586l1.293-1.292A1 1 0 016 17h7v-2a1 1 0 011-1 1 1 0 011 1v2a2 2 0 01-2 2H6.414l-2.707 2.707A1 1 0 013 22a.984.984 0 01-.383-.076zm17.676-7.217L17.586 12H11a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v10a1 1 0 01-.617.924A.984.984 0 0121 15a1 1 0 01-.707-.293zM11 10h7a1 1 0 01.707.293L20 11.585V4h-9z"
+              fill="currentColor"
+              stroke="transparent"
+              stroke-miterlimit="10"
+            />
+          </svg>
+          <span
+            class="hidden text-sm font-medium leading-[30px] tracking-normal lg:inline-block"
+          >
+            ${contactButton?.textContent}
+          </span>
+        </a>
 
-  const navWrapper = document.createElement('div');
-  navWrapper.className = 'nav-wrapper';
-  navWrapper.append(nav);
-  block.append(navWrapper);
+        <div
+          class="z-20 mx-1 mt-1"
+          classList=${() => ({
+            hidden: !menuOpen() || isLarge(),
+          })}
+        >
+          <${LangNav} nav="${langNav}" urlSegment="${langUrlSegment}" />
+        </div>
+        <button
+          class="menuButton relative z-20 h-[21px] w-6 lg:hidden"
+          classList=${() => ({ active: menuOpen() })}
+          onClick=${() => {
+            toggle();
+          }}
+          aria-label="burger"
+        >
+          <div class="burger">
+            <div class="top"></div>
+            <div class="bun"></div>
+            <div class="bottom"></div>
+          </div>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * @param {object} obj
+ * @param {HTMLUListElement} obj.nav
+ * @param {string} obj.urlSegment
+ */
+function LangNav({ nav, urlSegment }) {
+  const items = [...nav.querySelectorAll('a')]
+    .filter((item) => item.textContent?.toLowerCase() !== urlSegment)
+    .map((el) => el.cloneNode(true));
+  return html`
+    <nav class="flex text-base font-medium leading-5">${items}</nav>
+  `;
 }

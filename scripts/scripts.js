@@ -1,51 +1,99 @@
 import {
-  sampleRUM,
-  loadHeader,
-  loadFooter,
+  buildBlock,
+  decorateBlocks,
   decorateButtons,
+  decorateDescriptionOfImage,
   decorateIcons,
   decorateSections,
-  decorateBlocks,
   decorateTemplateAndTheme,
-  waitForLCP,
+  getMetadata,
   loadBlocks,
   loadCSS,
+  loadFooter,
+  loadHeader,
+  sampleRUM,
+  waitForLCP
 } from './aem.js';
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
+const LCP_BLOCKS = ['author']; // add your LCP blocks to the list
 
 /**
- * Moves all the attributes from a given elmenet to another given element.
- * @param {Element} from the element to copy attributes from
- * @param {Element} to the element to copy attributes to
+ * Builds hero block and prepends to main in a new section.
+ * @param {Element} main The container element
  */
-export function moveAttributes(from, to, attributes) {
-  if (!attributes) {
-    // eslint-disable-next-line no-param-reassign
-    attributes = [...from.attributes].map(({ nodeName }) => nodeName);
+function buildHeroBlock(main) {
+  const h1 = main.querySelector('h1');
+  const picture = main.querySelector('picture');
+  if (
+    h1 &&
+    picture &&
+    h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING
+  ) {
+    const section = document.createElement('div');
+    section.append(buildBlock('hero', { elems: [picture, h1] }));
+    main.prepend(section);
   }
-  attributes.forEach((attr) => {
-    const value = from.getAttribute(attr);
-    if (value) {
-      to.setAttribute(attr, value);
-      from.removeAttribute(attr);
-    }
-  });
+}
+
+function buildBlogListHero(main) {
+  const h1 = main.querySelector('h1');
+  const paragraph = main.querySelector('p');
+  if(h1 && paragraph && h1.nextElementSibling === paragraph){
+    const section = document.createElement('div');
+    section.append(buildBlock('intro', { elems: [h1, paragraph] }));
+    main.prepend(section);
+  }
 }
 
 /**
- * Move instrumentation attributes from a given element to another given element.
- * @param {Element} from the element to copy attributes from
- * @param {Element} to the element to copy attributes to
+ * Builds hero block and prepends to main in a new section.
+ * @param {Element} main The container element
  */
-export function moveInstrumentation(from, to) {
-  moveAttributes(
-    from,
-    to,
-    [...from.attributes]
-      .map(({ nodeName }) => nodeName)
-      .filter((attr) => attr.startsWith('data-aue-') || attr.startsWith('data-richtext-')),
-  );
+function buildTitle(main) {
+  const h1 = main.querySelector('h1');
+  const authorBlock = main.querySelector('.author');
+  if (h1 && authorBlock) {
+    h1.after(authorBlock);
+  }
+}
+
+/**
+ * @param {Element} main
+ */
+async function buildTagBlock(main) {
+  const template = getMetadata('template');
+  if (!template || template !== 'blog') {
+    return;
+  }
+
+  /** @type {HTMLMetaElement | null} */
+  const metaTag = document.querySelector('meta[name=category]');
+
+  if (metaTag) {
+    const section = document.createElement('div');
+    section.append(buildBlock('tags', { elems: [metaTag?.content] }));
+    main.prepend(section);
+  }
+}
+
+/**
+ * @param {Element} main
+ */
+async function buildAuthorBlock(main) {
+
+  const template = getMetadata('template');
+  if (!template || template !== 'article-template') {
+    return;
+  }
+  /** @type {HTMLMetaElement | null} */
+  const metaAuthor = document.querySelector('meta[name=author]');
+  if (metaAuthor) {
+    const section = document.createElement('div');
+    section.append(buildBlock('author', { elems: [metaAuthor?.content] }));
+
+    main.prepend(section);
+
+  }
 }
 
 /**
@@ -54,7 +102,9 @@ export function moveInstrumentation(from, to) {
 async function loadFonts() {
   await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
   try {
-    if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
+    if (!window.location.hostname.includes('localhost')) {
+      sessionStorage.setItem('fonts-loaded', 'true');
+    }
   } catch (e) {
     // do nothing
   }
@@ -64,11 +114,14 @@ async function loadFonts() {
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-function buildAutoBlocks() {
+function buildAutoBlocks(main) {
   try {
-    // TODO: add auto block, if needed
+    // buildAuthorBlock(main);
+    // buildTitle(main);
+    // buildTagBlock(main);
+    // buildHeroBlock(main);
+    buildBlogListHero(main);
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
   }
 }
@@ -77,10 +130,11 @@ function buildAutoBlocks() {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-// eslint-disable-next-line import/prefer-default-export
+
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
+  decorateDescriptionOfImage(main);
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
@@ -95,10 +149,11 @@ async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
+
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    await waitForLCP(LCP_BLOCKS);
+	await waitForLCP(LCP_BLOCKS);
   }
 
   try {
@@ -121,10 +176,12 @@ async function loadLazy(doc) {
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
-  if (hash && element) element.scrollIntoView();
+  if (hash && element) {
+    element.scrollIntoView();
+  }
 
   loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
+  setTimeout(() => new Promise((res) => res(loadFooter(doc.querySelector('footer')))), 1500);
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
@@ -139,10 +196,8 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
-  import('./sidekick.js').then(({ initSidekick }) => initSidekick());
 }
 
 async function loadPage() {

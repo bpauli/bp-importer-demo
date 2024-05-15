@@ -1,0 +1,58 @@
+.relatedposts {
+  width: 100%;
+  a {
+    text-decoration: none;
+  }
+  & .relatedposts-inner {
+    height: 330px;
+    @media (max-width: 768px) {
+      height: auto;
+    }
+    & .relatedposts-card-title {
+      font-size: var(--heading-font-size-xxl);
+      line-height: var(--heading-line-height-xxl);
+    }
+    & .relatedposts-card {
+      & .relatedposts-image {
+        max-width: 186px;
+        max-height: 186px;
+        @media (max-width: 768px) {
+          max-width: unset;
+          max-height: unset;
+        }
+      }
+      & .relatedposts-card-content {
+        & h5 {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            font-size: var(--heading-font-size-xs);
+            line-height: 1.6875rem;
+            @media (max-width: 768px) {
+              font-size: var(--heading-font-size-xl);
+            }
+        }
+        & .relatedposts-card-date {
+          font-size: 9pt;
+          line-height: var(--heading-line-height-xxs);
+      }
+      & .relatedposts-card-author {
+        & img {
+          font-size: 10px;
+        }
+        & .relatedposts-card-author-name {
+          font-size: 9pt;
+          line-height: var(--heading-line-height-xxs);
+        }
+        & .relatedposts-card-author-role {
+            font-size: 9pt;
+            line-height:  var(--heading-line-height-xxs);
+        }
+      }
+    }
+  }
+  }
+  .relatedposts-card-wrapper a.relatedposts-card {
+    text-decoration: none;
+  }
+}

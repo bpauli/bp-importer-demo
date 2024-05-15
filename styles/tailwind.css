@@ -1,0 +1,7 @@
+@layer tailwindBase {
+    @tailwind base;
+}
+@layer tailwind {
+    @tailwind components;
+    @tailwind utilities;
+}

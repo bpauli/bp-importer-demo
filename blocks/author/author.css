@@ -1,0 +1,11 @@
+.author.block {
+    display: flex;
+    flex-direction: column;
+    gap: 0rem;
+    align-items: center;
+
+    @media screen and (min-width: 768px) {
+        flex-direction: row;
+        gap: 4rem;
+    }
+}

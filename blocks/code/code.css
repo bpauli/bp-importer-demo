@@ -1,0 +1,162 @@
+.code {
+	display: block;
+	overflow-x: auto;
+	font-size: 14px;
+	line-height: 1.25rem;
+	border-radius: 5px;
+	margin: 0.625rem 0;
+	white-space: pre;
+	background: #474949;
+	color: #d1d9e1;
+	font-family: var(--font-code);
+	content-visibility: auto;
+}
+
+code.hljs {
+	padding: 3px 5px
+}
+
+pre code.hljs {
+	display: block;
+	overflow-x: auto;
+	padding: 1.25rem 0.9375rem;
+}
+
+
+.hljs-comment {
+	color: #697070
+}
+
+.hljs-type,
+.hljs-string,
+.hljs-number,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-quote,
+.hljs-template-tag,
+.hljs-deletion {
+	color: #880000
+}
+
+.hljs-title,
+.hljs-section {
+	color: #880000;
+}
+
+.hljs-regexp,
+.hljs-symbol,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-link,
+.hljs-selector-attr,
+.hljs-operator,
+.hljs-selector-pseudo {
+	color: #ab5656
+}
+
+.hljs-literal {
+	color: #695
+}
+
+.hljs-built_in,
+.hljs-bullet,
+.hljs-code,
+.hljs-addition {
+	color: #397300
+}
+
+.hljs-meta {
+	color: #1f7199
+}
+
+.hljs-meta .hljs-string {
+	color: #38a
+}
+
+.hljs-emphasis {
+	font-style: italic
+}
+
+.hljs-strong {
+	font-weight: var(--font-weight-bold);
+}
+
+.code .hljs-bullet,
+.code .hljs-link,
+.code .hljs-meta,
+.code .hljs-subst,
+.code .hljs-symbol {
+	color: #f99157;
+}
+
+.hljs-comment,
+.hljs-quote {
+	color: #969896;
+	font-style: italic;
+}
+
+.hljs-addition,
+.hljs-keyword,
+.hljs-literal,
+.hljs-selector-tag,
+.hljs-type {
+	color: #c9c;
+}
+
+.hljs-number,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+	color: #f99157;
+}
+
+.hljs-doctag,
+.hljs-regexp,
+.hljs-string {
+	color: #8abeb7;
+}
+
+.hljs-built_in,
+.hljs-name,
+.hljs-section,
+.hljs-title {
+	color: #b5bd68;
+}
+
+.hljs-class .hljs-title,
+.hljs-selector-id,
+.hljs-template-variable,
+.hljs-title.class_,
+.hljs-variable {
+	color: #fc6;
+}
+
+.hljs-name,
+.hljs-section,
+.hljs-strong {
+	font-weight: var(--font-weight-bold);
+}
+
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-subst,
+.hljs-symbol {
+	color: #f99157;
+}
+
+.hljs-deletion {
+	color: #dc322f;
+}
+
+.hljs-formula {
+	background: #eee8d5;
+}
+
+.hljs-attr,
+.hljs-attribute {
+	color: #81a2be;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}

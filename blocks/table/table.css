@@ -1,0 +1,14 @@
+body.article-template main .section table {
+    & th, td {
+        font-size: .8rem;
+        line-height: var(--heading-line-height-xs);
+        padding: 1.1875rem;
+        & p {
+            font-size: .8rem;
+            line-height: var(--heading-line-height-xs);
+        }
+    }
+    & tr:nth-child(even) {
+        background-color: #eff1f4;
+    }
+}

@@ -1,0 +1,45 @@
+.article-template main .quote-wrapper {
+    & .quote {
+        & .quote-content {
+            padding: 2.625rem 0 1.875rem;
+        }
+
+        & .quote-content > :first-child > :first-child {
+            font-size: var(--heading-font-size-xxl);
+            line-height: var(--heading-line-height-xxl);
+            font-weight: var(--font-weight-bold);
+        }
+
+        & .quote-content > :first-child > :first-child:before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            content: "";
+            background-image: url(../../icons/text-quote-red.svg);
+            background-repeat: no-repeat;
+            background-size: 100%;
+            width: 1.9375rem;
+            height: 1.5rem;
+        }
+        & .quote-content > :nth-child(2) > :first-child {
+            padding: 40px 0;
+          }
+        & p {
+            margin: 0;
+            font-size: .875rem;
+        }
+        & h2 {
+            padding: 0;
+            margin: 0;
+            font-size: .875rem;
+            font-weight: var(--font-weight-regular);
+            line-height: 1.0625rem;
+        }
+        & p:first-child {
+            text-transform: uppercase;
+            margin-bottom: 0.125rem;
+            font-weight: var(--font-weight-boldest);
+            line-height: 1.0625rem;
+        }
+    }
+}
