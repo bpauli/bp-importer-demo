@@ -2,21 +2,7 @@
   {
     "id": "main",
     "components": [
-      "section",
-      "breadcrumb"
-    ]
-  },
-  {
-    "id": "columns",
-    "components": []
-  },
-  {
-    "id": "column",
-    "components": [
-      "text",
-      "image",
-      "button",
-      "title"
+      "section"
     ]
   },
   {
@@ -28,13 +14,8 @@
       "title",
       "tags",
       "author",
-      "columns"
-    ]
-  },
-  {
-    "id": "cards",
-    "components": [
-      "card"
+      "code",
+      "relatedposts"
     ]
   }
 ]
