@@ -2,7 +2,7 @@
 
 import { loadCSS } from '../scripts/aem.js';
 
-/** @type {import('./utils.d.ts').html} */
+/** @type {import('./utils.js').html} */
 export function html(strings, ...values) {
   let str = '';
   for (let i = 0; i < strings.length; i++) {
@@ -12,7 +12,7 @@ export function html(strings, ...values) {
   return str;
 }
 
-/** @type {import('./utils.d.ts').render} */
+/** @type {import('./utils.js').render} */
 export function render(element, mountContainer) {
   const _mount = mountContainer?.mount;
   if (_mount) {
@@ -28,7 +28,7 @@ export function render(element, mountContainer) {
   return fragment;
 }
 
-/** @type {import('./utils.d.ts').groupBy} */
+/** @type {import('./utils.js').groupBy} */
 export function groupBy(array, keyGetter) {
   const _map = new Map();
   const arr = array.reduce((map, item) => {
@@ -45,12 +45,12 @@ export function groupBy(array, keyGetter) {
   return arr;
 }
 
-/** @type {import('./utils.d.ts').loadComponentCSS} */
+/** @type {import('./utils.js').loadComponentCSS} */
 export function loadComponentCSS(url) {
   loadCSS(url.replace('.js', '.css'));
 }
 
-/** @type {import('./utils.d.ts').clamp} */
+/** @type {import('./utils.js').clamp} */
 export function clamp(num, min, max) {
   return num <= min ? min : num >= max ? max : num;
 };

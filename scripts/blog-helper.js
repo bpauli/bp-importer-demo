@@ -1,8 +1,8 @@
 import { groupBy } from './utils.js';
 
-/** @type {import('./blog-helper.d.ts').BlogIndex | null} */
+/** @type {import('./blog-helper.js').BlogIndex | null} */
 let blogIndex = null;
-/** @type {import('./blog-helper.d.ts').fetchBlogArticleIndex} */
+/** @type {import('./blog-helper.js').fetchBlogArticleIndex} */
 export async function fetchBlogArticleIndex(
   props = { pageSize: 40, offset: 0 },
 ) {
@@ -22,7 +22,7 @@ export async function fetchBlogArticleIndex(
     const resp = await fetch(
       `/api/blogposts.json`,
     );
-    /** @type {import('./blog-helper.d.ts').ArticleResult} */
+    /** @type {import('./blog-helper.js').ArticleResult} */
     const json = await resp.json();
     const complete = json.limit + json.offset === json.total;
     json.data.forEach((post) => {
@@ -111,7 +111,7 @@ export async function getArticlesByCategory(
 
 /** @type {Array<any> | undefined} */
 let authors;
-/** @type {import('./blog-helper.d.ts').getAuthors} */
+/** @type {import('./blog-helper.js').getAuthors} */
 export async function getAuthors() {
   try {
     if (!authors) {
@@ -135,7 +135,7 @@ export async function getAuthors() {
   }
 }
 
-/** @type {import('./blog-helper.d.ts').getAuthorByName} */
+/** @type {import('./blog-helper.js').getAuthorByName} */
 export async function getAuthorByName(authorName) {
   try {
     const authors = await getAuthors();
@@ -153,7 +153,7 @@ export async function getAuthorByName(authorName) {
   }
 }
 
-/** @type {import('./blog-helper.d.ts').getAuthorByNameSync} */
+/** @type {import('./blog-helper.js').getAuthorByNameSync} */
 export function getAuthorByNameSync(authorName, authors) {
   if (!authors) {
     throw new Error('no authors provided');

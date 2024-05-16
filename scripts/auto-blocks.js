@@ -37,7 +37,7 @@ function buildRelatedPostsBlock(main) {
   }
 }
 
-/** @type {import('./auto-blocks.d.ts').buildCustomAutoBlocks} */
+/** @type {import('./auto-blocks.js').buildCustomAutoBlocks} */
 export function buildCustomAutoBlocks(main) {
   buildTagBlock(main);
   // buildRelatedPostsBlock(main);
