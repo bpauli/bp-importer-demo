@@ -2,14 +2,14 @@ import { createEffect, createMemo, createSignal, onMount } from '../../vendor/so
 import html from '../../vendor/solid-js/html/dist/html.js';
 import { render } from '../../vendor/solid-js/web/dist/web.js';
 import { clamp } from '../../lib/utils.js';
+import { getMetadata } from '../../scripts/aem.js';
+import { loadFragment } from '../fragment/fragment.js';
 
 /** @param {HTMLElement} block */
 export default async function decorate(block) {
-  const langUrlSegment = document.location.pathname.split('/').at(1);
-  const lang = langUrlSegment?.match(/^(en|de)$/i)?.[0] || 'en';
-  const headerXF = await fetch(
-    `https://main--comwrap-xwalk-stage--comwrap.hlx.page/fragments/${lang || 'en'}/site/header/master.plain.html`,
-  );
+  const navMeta = getMetadata('nav');
+  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
+  const headerXF = await loadFragment(navPath);
   const headerHTML = await headerXF.text();
   const documentFragment = document
     .createRange()
