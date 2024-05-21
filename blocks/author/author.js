@@ -1,6 +1,6 @@
 import { For, Show, createMemo, createResource } from 'solid-js';
-import html from 'solid-js/html';
-import { render } from 'solid-js/web';
+import html from '../../vendor/solid-js/html/dist/html.js';
+import { render } from '../../vendor/solid-js/html/dist/web.js';
 import { getAuthorByNameSync, getAuthors } from '../../lib/blog-helper.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
