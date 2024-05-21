@@ -1,6 +1,6 @@
-import { createUniqueId } from 'solid-js';
-import html from 'solid-js/html';
-import { For, render } from 'solid-js/web';
+import { createUniqueId } from '../../vendor/solid-js/dist/solid.js';
+import html from '../../vendor/solid-js/html/dist/html.js';
+import { For, render } from '../../vendor/solid-js/web/dist/web.js';
 
 /** @param {HTMLElement} block */
 export default function decorate(block) {

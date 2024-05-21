@@ -1,6 +1,6 @@
-import { createSignal, onMount } from 'solid-js';
-import html from 'solid-js/html';
-import { Portal } from 'solid-js/web';
+import { createSignal, onMount } from '../../vendor/solid-js/dist/solid.js';
+import html from '../../vendor/solid-js/html/dist/html.js';
+import { Portal } from '../../vendor/solid-js/web/dist/web.js';
 
 export default function () {
   const [visible, setVisible] = createSignal(false);

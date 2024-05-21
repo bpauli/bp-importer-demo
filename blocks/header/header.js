@@ -1,6 +1,6 @@
-import { createEffect, createMemo, createSignal, onMount } from 'solid-js';
-import html from 'solid-js/html';
-import { render } from 'solid-js/web';
+import { createEffect, createMemo, createSignal, onMount } from '../../vendor/solid-js/dist/solid.js';
+import html from '../../vendor/solid-js/html/dist/html.js';
+import { render } from '../../vendor/solid-js/web/dist/web.js';
 import { clamp } from '../../lib/utils.js';
 
 /** @param {HTMLElement} block */

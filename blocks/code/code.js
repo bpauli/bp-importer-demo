@@ -1,5 +1,5 @@
-import html from 'solid-js/html';
-import { render } from 'solid-js/web';
+import html from '../../vendor/solid-js/html/dist/html.js';
+import { render } from '../../vendor/solid-js/web/dist/web.js';
 
 /** @param {HTMLElement} block */
 export default async function decorate(block) {

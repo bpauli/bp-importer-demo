@@ -1,6 +1,4 @@
-// import html from 'solid-js/html';
-
-import { createEffect, createSignal } from 'solid-js';
+import { createEffect, createSignal } from '../../vendor/solid-js/dist/solid.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
 const searchParams = new URLSearchParams(window.location.search).get(
