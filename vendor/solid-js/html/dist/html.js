@@ -19,7 +19,7 @@ import {
   DelegatedEvents,
   SVGElements,
   SVGNamespace
-} from "solid-js/web";
+} from "../../web/dist/web.js";
 
 const tagRE = /(?:<!--[\S\s]*?-->|<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>)/g;
 const attrRE =

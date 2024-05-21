@@ -27,7 +27,7 @@ export {
   createMemo as memo,
   mergeProps,
   untrack
-} from "solid-js";
+} from "../../dist/solid.js";
 
 const booleans = [
   "allowfullscreen",
