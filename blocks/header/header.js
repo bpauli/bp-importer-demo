@@ -199,7 +199,7 @@ export default async function decorate(block) {
   const headerHTML = await loadFragment(navPath);
   const documentFragment = document
     .createRange()
-    .createContextualFragment(headerHTML);
+    .createContextualFragment(headerHTML.innerHTML);
   block.innerHTML = '';
 
   render(() => Header(documentFragment, 'en'), block);
