@@ -10,7 +10,7 @@ export {
   Switch,
   createComponent,
   mergeProps
-} from "solid-js";
+} from '../../dist/solid.js';
 import { Feature, Serializer, getCrossReferenceHeader } from "seroval";
 
 const booleans = [

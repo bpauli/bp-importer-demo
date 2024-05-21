@@ -11,8 +11,8 @@ import {
   createSignal,
   onCleanup,
   splitProps,
-  $DEVCOMP
-} from "solid-js";
+  $DEVCOMP,
+} from '../../dist/solid.js';
 export {
   ErrorBoundary,
   For,
@@ -27,8 +27,8 @@ export {
   getOwner,
   createMemo as memo,
   mergeProps,
-  untrack
-} from "solid-js";
+  untrack,
+} from '../../dist/solid.js';
 
 const booleans = [
   "allowfullscreen",
