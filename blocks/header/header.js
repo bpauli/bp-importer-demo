@@ -8,7 +8,7 @@ export default async function decorate(block) {
   const langUrlSegment = document.location.pathname.split('/').at(1);
   const lang = langUrlSegment?.match(/^(en|de)$/i)?.[0] || 'en';
   const headerXF = await fetch(
-    `/fragments/${lang || 'en'}/site/header/master.plain.html`,
+    `https://main--comwrap-xwalk-stage--comwrap.hlx.page/fragments/${lang || 'en'}/site/header/master.plain.html`,
   );
   const headerHTML = await headerXF.text();
   const documentFragment = document
