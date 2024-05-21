@@ -5,19 +5,6 @@ import { clamp } from '../../lib/utils.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
-/** @param {HTMLElement} block */
-export default async function decorate(block) {
-  const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const headerXF = await loadFragment(navPath);
-  const headerHTML = await headerXF.text();
-  const documentFragment = document
-    .createRange()
-    .createContextualFragment(headerHTML);
-  block.innerHTML = '';
-
-  render(() => Header(documentFragment, langUrlSegment), block);
-}
 
 /**
  * @param {DocumentFragment} documentFragment
@@ -203,4 +190,17 @@ function LangNav({ nav, urlSegment }) {
   return html`
     <nav class="flex text-base font-medium leading-5">${items}</nav>
   `;
+}
+
+/** @param {HTMLElement} block */
+export default async function decorate(block) {
+  const navMeta = getMetadata('nav');
+  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
+  const headerHTML = await loadFragment(navPath);
+  const documentFragment = document
+    .createRange()
+    .createContextualFragment(headerHTML);
+  block.innerHTML = '';
+
+  render(() => Header(documentFragment, 'en'), block);
 }
