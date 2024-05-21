@@ -11,7 +11,7 @@ import {
   createSignal,
   onCleanup,
   splitProps
-} from "solid-js";
+} from "../../dist/solid.js";
 export {
   ErrorBoundary,
   For,
