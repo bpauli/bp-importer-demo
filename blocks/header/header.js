@@ -16,6 +16,7 @@ function Header(documentFragment, langUrlSegment) {
   const [nav, langNav] = documentFragment.querySelectorAll('ul');
   const contactButton = [...documentFragment.querySelectorAll('a')].at(-1);
   const computedUrlSegment = langUrlSegment ? `/${langUrlSegment}.html` : '/';
+  const iconPrefix = window.hlx.codeBasePath;
   const showMenu = createMemo(() => menuOpen() && !isLarge());
 
   createEffect(() => {
@@ -91,7 +92,7 @@ function Header(documentFragment, langUrlSegment) {
     <div class="container mx-auto flex max-w-screen-2xl items-center">
       <a href="${computedUrlSegment}">
         <img
-          src="${window.hlx.codeBasePath}/icons/logo.svg"
+          src="${iconPrefix}/icons/logo.svg"
           alt="logo"
           class="aspect-[307/96] w-[117px] md:w-[148px]"
         />
