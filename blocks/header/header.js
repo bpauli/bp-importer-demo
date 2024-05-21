@@ -91,7 +91,7 @@ function Header(documentFragment, langUrlSegment) {
     <div class="container mx-auto flex max-w-screen-2xl items-center">
       <a href="${computedUrlSegment}">
         <img
-          src="/icons/logo.svg"
+          src="${window.hlx.codeBasePath}${prefix}/icons/logo.svg"
           alt="logo"
           class="aspect-[307/96] w-[117px] md:w-[148px]"
         />
