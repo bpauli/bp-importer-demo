@@ -536,6 +536,10 @@ div.author {
                 code {
                     font-size: 14px;
                 }
+
+                img {
+                    max-width: 980px;
+                }
             }
 
             .cmp-author__wrapper .cmp-author__inner .cmp-author__body p {
