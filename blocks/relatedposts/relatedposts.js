@@ -2,7 +2,7 @@ import {
   getArticlesByCategory,
   getAuthorByNameSync,
   getAuthors,
-} from '../../scripts/blog-helper.js';
+} from '../../lib/blog-helper.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import {
   a,

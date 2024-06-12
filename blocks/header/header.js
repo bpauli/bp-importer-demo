@@ -1,10 +1,23 @@
-import { createEffect, createMemo, createSignal, onMount } from '../../vendor/solid-js/dist/solid.js';
-import html from '../../vendor/solid-js/html/dist/html.js';
-import { render } from '../../vendor/solid-js/web/dist/web.js';
+import { createEffect, createMemo, createSignal, onMount } from 'solid-js';
+import html from 'solid-js/html';
+import { render } from 'solid-js/web';
 import { clamp } from '../../lib/utils.js';
-import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
 
+/** @param {HTMLElement} block */
+export default async function decorate(block) {
+  const langUrlSegment = document.location.pathname.split('/').at(1);
+  const lang = langUrlSegment?.match(/^(en|de)$/i)?.[0] || 'en';
+  const headerXF = await fetch(
+    `/fragments/${lang || 'en'}/site/header/master.plain.html`,
+  );
+  const headerHTML = await headerXF.text();
+  const documentFragment = document
+    .createRange()
+    .createContextualFragment(headerHTML);
+  block.innerHTML = '';
+
+  render(() => Header(documentFragment, langUrlSegment), block);
+}
 
 /**
  * @param {DocumentFragment} documentFragment
@@ -16,7 +29,6 @@ function Header(documentFragment, langUrlSegment) {
   const [nav, langNav] = documentFragment.querySelectorAll('ul');
   const contactButton = [...documentFragment.querySelectorAll('a')].at(-1);
   const computedUrlSegment = langUrlSegment ? `/${langUrlSegment}.html` : '/';
-  const iconPrefix = window.hlx.codeBasePath;
   const showMenu = createMemo(() => menuOpen() && !isLarge());
 
   createEffect(() => {
@@ -92,7 +104,7 @@ function Header(documentFragment, langUrlSegment) {
     <div class="container mx-auto flex max-w-screen-2xl items-center">
       <a href="${computedUrlSegment}">
         <img
-          src="${iconPrefix}/icons/logo.svg"
+          src="/icons/logo.svg"
           alt="logo"
           class="aspect-[307/96] w-[117px] md:w-[148px]"
         />
@@ -191,17 +203,4 @@ function LangNav({ nav, urlSegment }) {
   return html`
     <nav class="flex text-base font-medium leading-5">${items}</nav>
   `;
-}
-
-/** @param {HTMLElement} block */
-export default async function decorate(block) {
-  const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const headerHTML = await loadFragment(navPath);
-  const documentFragment = document
-    .createRange()
-    .createContextualFragment(headerHTML.innerHTML);
-  block.innerHTML = '';
-
-  render(() => Header(documentFragment, 'en'), block);
 }

@@ -1,14 +1,14 @@
-import html from '../../vendor/solid-js/html/dist/html.js';
-import { render } from '../../vendor/solid-js/web/dist/web.js';
+import html from 'solid-js/html';
+import { render } from 'solid-js/web';
 import Heart from './_components/heart.js';
-import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
 
 /** @param {HTMLElement} block */
 export default async function decorate(block) {
-  const footerMeta = getMetadata('footer');
-  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
-  const footerXF = await loadFragment(footerPath);
+  const langUrlSegment = document.location.pathname.split('/').at(1);
+  const lang = langUrlSegment?.match(/^(en|de)$/i)?.[0] || 'en';
+  const footerXF = await fetch(
+    `/fragments/${lang}/site/footer/master.plain.html`,
+  );
   const footerHTML = await footerXF.text();
   const documentFragment = document
     .createRange()
