@@ -4,7 +4,8 @@ import { render } from 'solid-js/web';
 function formattedTags(inputString) {
   return inputString
     .replace(/comwrap:products\//g, '')
-    .map((part) => part.replace('-', ' ').toUpperCase());
+    .replace(/-/g, ' ')
+    .toUpperCase();
 }
 
 /** @param {HTMLElement} block */
