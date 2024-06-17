@@ -32,11 +32,13 @@ export interface Article {
   hero: boolean
 }
 export interface Author {
-  path: string
-  title: string
-  image: string
-  description: string
-  date: Date
-  lastModified: string
-  role: string
+  _path: string
+  headline: string
+  image: Image
+  subline: string
+}
+
+export interface Image {
+  _path: string
+  _dynamicUrl: string
 }

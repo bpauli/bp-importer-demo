@@ -60,26 +60,18 @@ function Author(authorNames) {
               class="flex w-[24ch] min-w-[24ch] flex-col items-center justify-center gap-2 md:flex-row"
             >
               <div class="flex-shrink-0 text-[10px]">
-                ${createOptimizedPicture(
-                  author.image,
-                  author.title,
-                  true,
-
-                  [{ height: '150', width: '150' }],
-                  '',
-                  'w-11 rounded-full',
-                )}
+                <img src="${author.image._path + '/jcr:content/renditions/cq5dam.thumbnail.319.319.png'}" alt="${author.headline}" class="w-11 rounded-full" width="150" height="150"/>
               </div>
               <div>
                 <p
                   class="m-0 text-balance text-center text-[9pt] text-base font-black leading-[var(--heading-line-height-xxs)] md:text-left"
                 >
-                  ${author.title}
+                  ${author.headline}
                 </p>
                 <p
                   class="m-0 text-balance text-center text-base text-zinc-600 md:text-left"
                 >
-                  ${author.role}
+                  ${author.subline}
                 </p>
               </div>
             </div>

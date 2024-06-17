@@ -7,6 +7,8 @@
     "lint:js": "eslint .",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
     "lint": "npm run lint:js && npm run lint:css",
+    "aem": "aem up --no-open",
+    "dev": "npm-run-all --parallel aem tailwind",
     "converter:build": "cd tools/actions/convert && rimraf dist/ && webpack",
     "converter:build:prod": "cd tools/actions/convert && rimraf dist/ && webpack --mode=production",
     "converter:test": "cd tools/actions/convert && instant-mocha --spec test/**/*.test.js --require test/setup-env.esm.mjs --timeout 10000 --reporter-option maxDiffSize=0",

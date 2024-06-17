@@ -2,18 +2,15 @@ import { createEffect, createMemo, createSignal, onMount } from 'solid-js';
 import html from 'solid-js/html';
 import { render } from 'solid-js/web';
 import { clamp } from '../../lib/utils.js';
+import { getMetadata } from '../../scripts/aem.js';
+import { loadFragment } from '../fragment/fragment.js';
 
 /** @param {HTMLElement} block */
 export default async function decorate(block) {
   const langUrlSegment = document.location.pathname.split('/').at(1);
-  const lang = langUrlSegment?.match(/^(en|de)$/i)?.[0] || 'en';
-  const headerXF = await fetch(
-    `/fragments/${lang || 'en'}/site/header/master.plain.html`,
-  );
-  const headerHTML = await headerXF.text();
-  const documentFragment = document
-    .createRange()
-    .createContextualFragment(headerHTML);
+  const navMeta = getMetadata('nav');
+  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
+  const documentFragment = await loadFragment(navPath);
   block.innerHTML = '';
 
   render(() => Header(documentFragment, langUrlSegment), block);
