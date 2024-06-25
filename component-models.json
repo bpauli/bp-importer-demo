@@ -52,6 +52,13 @@
             "label": "Category",
             "valueType": "string",
             "rootPath": "/content/cq:tags/"
+          },
+          {
+            "component": "text",
+            "valueType": "string",
+            "name": "topics",
+            "multi": true,
+            "label": "Topics"
           }
         ]
       }
