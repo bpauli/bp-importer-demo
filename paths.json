@@ -1,7 +1,8 @@
 {
   "mappings": [
     "/content/bp-importer-demo/:/",
-    "/content/bp-importer-demo/configuration:/.helix/config.json"
+    "/content/bp-importer-demo/configuration:/.helix/config.json",
+    "/content/bp-importer-demo/taxonomy:/taxonomy.json"
   ],
   "includes": [
     "/content/bp-importer-demo",
