@@ -129,7 +129,7 @@
 
     body {
         --header-padding-top: calc(var(--header-padding-block-start) * 2 + var(--nav-height));
-
+        background-color: var(--background-color);
         display: none;
         font-size: var(--body-font-size-m);
         margin: 0;
